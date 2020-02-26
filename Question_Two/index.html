@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <p id="output"></p>
+
+    <script>
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                outputResult(xhttp.responseXML);
+            }
+        };
+
+        xhttp.open("GET", "input.xml", true);
+        xhttp.send();
+
+        function outputResult(xml){
+            var text = "";
+            path = "//Reference[@RefCode='CAR']/RefText|//Reference[@RefCode='MWB']/RefText|//Reference[@RefCode='TRV']/RefText";
+            if(xml.evaluate){
+                var nodes = xml.evaluate(path, xml, null, XPathResult.ANY_TYPE, null);
+                var result = nodes.iterateNext();
+                while(result){
+                    text += result.childNodes[0].nodeValue + "<br/>";
+                    result = nodes.iterateNext();
+                }
+            }
+
+            document.getElementById("output").innerHTML = text;
+        }
+    </script>
+</body>
+</html>
