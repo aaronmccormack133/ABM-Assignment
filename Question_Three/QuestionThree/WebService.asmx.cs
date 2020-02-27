@@ -23,28 +23,36 @@ namespace QuestionThree
         [WebMethod]
         public int CorrectData()
         {
+            // Input file path
             var file = "\\InputDocument.xml";
 
-            XDocument xml = XDocument.Load(file);            
-
-            if (!CheckAttr(xml))
+            try
             {
-                return -1;
+                XDocument xml = XDocument.Load(file);
+                if (!CheckAttr(xml))
+                {
+                    return -1;
+                }
+                else if (!CheckSiteId(xml))
+                {
+                    return -2;
+                }
+                else
+                {
+                    return 0;
+                }
             }
-            else if(!CheckSiteId(xml))
+            catch
             {
-                return -2;
-            }
-            else
-            {
-                return 0;
+                System.Diagnostics.Debug.WriteLine("Not valid XML");
+                return 1;
             }
         }
 
         public bool CheckAttr(XDocument xml)
         {
             var result = (from q in xml.Descendants("Declaration")
-                          select (string)q.Attribute("Command"))
+                          select (string)q.Attribute("Command"));
 
             foreach (var res in result)
             {
@@ -69,7 +77,7 @@ namespace QuestionThree
 
             foreach(var res in result)
             {
-                System.Diagnostics.Debug.WriteLine(res.Contains("DUB"));
+                
                 if (res.Contains("DUB"))
                 {
                     return true;
@@ -81,7 +89,7 @@ namespace QuestionThree
             }
             return false;
         }
-        
+     
 
 
         [WebMethod]
