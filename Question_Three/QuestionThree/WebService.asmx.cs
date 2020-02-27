@@ -19,22 +19,13 @@ namespace QuestionThree
     // [System.Web.Script.Services.ScriptService]
     public class WebService : System.Web.Services.WebService
     {
-        // global instance of the file input
-        // three methods for each section
-        // return the response coddes
-        // have a webform to display each code
-        // display in the onload
 
         [WebMethod]
         public int CorrectData()
         {
-            var file = "D:\\Projects\\FRS\\Question_Three\\QuestionThree\\InputDocument.xml";
-            var currentDirectory = Directory.GetCurrentDirectory();
-            var xmlFilePath = Path.Combine(currentDirectory, file);
+            var file = "\\InputDocument.xml";
 
-            XDocument xml = XDocument.Load(file);
-
-            
+            XDocument xml = XDocument.Load(file);            
 
             if (!CheckAttr(xml))
             {
@@ -53,9 +44,7 @@ namespace QuestionThree
         public bool CheckAttr(XDocument xml)
         {
             var result = (from q in xml.Descendants("Declaration")
-                          select (string)q.Attribute("Command"));
-
-
+                          select (string)q.Attribute("Command"))
 
             foreach (var res in result)
             {
